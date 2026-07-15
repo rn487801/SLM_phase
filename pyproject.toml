@@ -1,0 +1,35 @@
+[project]
+name = "slm-toolbox"
+version = "0.2.0"
+description = "Python SDK for spatial light modulator (SLM) phase-pattern generation, projection, wavelength calibration, automated measurement, and camera-feedback self-calibration"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Nanyte" }]
+keywords = ["SLM", "spatial light modulator", "holography", "OAM", "vortex beam", "adaptive optics", "photonics"]
+dependencies = [
+    "numpy",
+    "scipy",
+    "pillow",
+]
+
+# Optional extras -- the core SDK imports with just the base deps above; each
+# extra pulls in a hardware/vendor library only if you actually use that piece.
+[project.optional-dependencies]
+gui = ["matplotlib"]                          # only if you extend the Tk GUI with mpl; Tk is stdlib
+instruments = ["pyserial", "pyvisa", "thorlabs-elliptec"]  # Elliptec stages + PM100 power meter
+cv = ["opencv-python"]                         # optional accelerator for feedback.auto_roi
+notebook = ["jupyter", "ipython"]
+all = ["matplotlib", "pyserial", "pyvisa", "thorlabs-elliptec", "opencv-python", "jupyter", "ipython"]
+# NOTE: the HIKROBOT camera needs the vendor MVS SDK (not pip-installable) on PYTHONPATH.
+
+[project.urls]
+Documentation = "https://example.invalid/slm-toolbox"  # placeholder; no public docs site yet
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# Explicit so the instruments subpackage is always shipped/installed.
+packages = ["slm_toolbox", "slm_toolbox.instruments"]
